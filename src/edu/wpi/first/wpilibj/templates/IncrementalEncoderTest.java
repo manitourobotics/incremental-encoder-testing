@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * one wire to each the Mag DECn pin and the Mag INCn for testing to a signal pin(SIG) on the digital IO on the digital sidecar 
  * see section 4.1 of the manual for pin descriptions 
  */
-public class EncoderTest extends SimpleRobot {
+public class IncrementalEncoderTest extends SimpleRobot {
     
     private final int CONTROLLER_PWM_OUT = 2;
     private final SpeedController speedController = new Jaguar(CONTROLLER_PWM_OUT);
