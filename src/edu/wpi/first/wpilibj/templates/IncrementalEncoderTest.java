@@ -2,9 +2,9 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * one wire to each the Mag DECn pin and the Mag INCn for testing to a signal pin(SIG) on the digital IO on the digital sidecar 
  * see section 4.1 of the manual for pin descriptions 
  */
-public class IncrementalEncoderTest extends SimpleRobot {
+public class IncrementalEncoderTest extends IterativeRobot {
     
     private final int CONTROLLER_PWM_OUT = 2;
     private final SpeedController speedController = new Jaguar(CONTROLLER_PWM_OUT);
@@ -45,25 +45,25 @@ public class IncrementalEncoderTest extends SimpleRobot {
     DigitalInput magdec = new DigitalInput(MAGNETIC_FIELD_DECREASING_TEST);
     DigitalInput maginc = new DigitalInput(MAGNETIC_FIELD_INCREASING_TEST);
     
-    public void operatorControl() {
+    public void teleopInit() {
         //start recording changes in position
         encoder.start();
-        
-        while(true){
-            // the encoder get function in normalized to 1024 ticks
-            double rotations = ((double)encoder.get())/1024;
-            System.out.println("rotation:" + rotations);
-            SmartDashboard.putBoolean("direction", encoder.getDirection());
-            SmartDashboard.putBoolean("sStopped", encoder.getStopped());
-            SmartDashboard.putNumber("raw", encoder.getRaw());
-            SmartDashboard.putNumber("getcount", encoder.get());
-            SmartDashboard.putNumber("rotations", rotations);
-            SmartDashboard.putBoolean("magdec", magdec.get());
-            SmartDashboard.putBoolean("maginc", maginc.get());
+    }
+
+    public void teleopPeriodic() {
+        // the encoder get function in normalized to 1024 ticks
+        double rotations = ((double)encoder.get())/1024;
+        System.out.println("rotation:" + rotations);
+        SmartDashboard.putBoolean("direction", encoder.getDirection());
+        SmartDashboard.putBoolean("sStopped", encoder.getStopped());
+        SmartDashboard.putNumber("raw", encoder.getRaw());
+        SmartDashboard.putNumber("getcount", encoder.get());
+        SmartDashboard.putNumber("rotations", rotations);
+        SmartDashboard.putBoolean("magdec", magdec.get());
+        SmartDashboard.putBoolean("maginc", maginc.get());
 
 
-            //control a motor with one of its axes, and make it go 10 times slower
-            speedController.set(joystick.getRawAxis(JOYSTICK_AXES) * .1);
-        }        
+        //control a motor with one of its axes, and make it go 10 times slower
+        speedController.set(joystick.getRawAxis(JOYSTICK_AXES) * .1);
     }
 }
